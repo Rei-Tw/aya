@@ -65,6 +65,7 @@ pub struct BtfMapDef {
     pub(crate) max_entries: u32,
     pub(crate) map_flags: u32,
     pub(crate) pinning: PinningType,
+    pub(crate) ifindex: u32,
     /// BTF type id of the map key
     pub btf_key_type_id: u32,
     /// BTF type id of the map value
@@ -124,6 +125,8 @@ pub struct bpf_map_def {
     pub max_entries: u32,
     /// Map flags
     pub map_flags: u32,
+    /// Map ifindex
+    pub ifindex: u32,
     // optional features
     /// Id
     pub id: u32,
@@ -205,6 +208,14 @@ impl Map {
         match self {
             Map::Legacy(m) => m.def.pinning,
             Map::Btf(m) => m.def.pinning,
+        }
+    }
+
+    /// Returns the interface index
+    pub fn ifindex(&self) -> u32 {
+        match self {
+            Map::Legacy(m) => m.def.ifindex,
+            Map::Btf(m) => m.def.ifindex,
         }
     }
 

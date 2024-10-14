@@ -1312,6 +1312,9 @@ fn parse_btf_map_def(btf: &Btf, info: &DataSecEntry) -> Result<(String, BtfMapDe
                     PinningType::None
                 });
             }
+            "ifindex" => {
+                map_def.ifindex = get_map_field(btf, m.btf_type)?;
+            }
             other => {
                 debug!("skipping unknown map section: {}", other);
                 continue;
@@ -1332,6 +1335,7 @@ pub fn parse_map_info(info: bpf_map_info, pinned: PinningType) -> Map {
                 max_entries: info.max_entries,
                 map_flags: info.map_flags,
                 pinning: pinned,
+                ifindex: info.ifindex,
                 btf_key_type_id: info.btf_key_type_id,
                 btf_value_type_id: info.btf_value_type_id,
             },
@@ -1347,6 +1351,7 @@ pub fn parse_map_info(info: bpf_map_info, pinned: PinningType) -> Map {
                 value_size: info.value_size,
                 max_entries: info.max_entries,
                 map_flags: info.map_flags,
+                ifindex: info.ifindex,
                 pinning: pinned,
                 id: info.id,
             },
@@ -1541,6 +1546,7 @@ mod tests {
             value_size: 3,
             max_entries: 4,
             map_flags: 5,
+            ifindex: 0,
             id: 0,
             pinning: PinningType::None,
         };
@@ -1559,6 +1565,7 @@ mod tests {
             value_size: 3,
             max_entries: 4,
             map_flags: 5,
+            ifindex: 0,
             id: 6,
             pinning: PinningType::ByName,
         };
@@ -1574,6 +1581,7 @@ mod tests {
             value_size: 3,
             max_entries: 4,
             map_flags: 5,
+            ifindex: 0,
             id: 6,
             pinning: PinningType::ByName,
         };
@@ -1605,6 +1613,7 @@ mod tests {
                     value_size,
                     max_entries: 1,
                     map_flags: 0,
+                    ifindex: 0,
                     id: 0,
                     pinning: PinningType::None,
                 },
@@ -2583,6 +2592,7 @@ mod tests {
                     value_size: 3,
                     max_entries: 1,
                     map_flags: BPF_F_RDONLY_PROG,
+                    ifindex: 0,
                     id: 1,
                     pinning: PinningType::None,
                 },
