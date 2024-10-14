@@ -50,7 +50,7 @@ pub(crate) fn bpf_create_map(
     u.value_size = def.value_size();
     u.max_entries = def.max_entries();
     u.map_flags = def.map_flags();
-    u.ifindex = def.ifindex();
+    u.map_ifindex = def.ifindex();
 
     if let obj::Map::Btf(m) = def {
         use bpf_map_type::*;
